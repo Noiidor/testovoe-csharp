@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 using FigureLib;
 
@@ -124,7 +123,6 @@ namespace FigureLib.Tests
         public float AreaOfRectangleTest(float[] sides)
         {
             Rectangle rect = new Rectangle(sides);
-            //Assert.AreEqual(rect.area, sideA * sideB);
             return rect.area;
         }
 
@@ -136,13 +134,13 @@ namespace FigureLib.Tests
             return rect.perimeter;
         }
 
-        // Решил не встраивать округление в вычисление площади по умолчанию, чтобы пользователь сам мог округлить сколько ему нужно при помощи Round().
+        
         [Test]
         [TestCaseSource("CaseDataTriArea")]
         public float AreaOfTriangleTest(float[] sides)
         {
             Triangle tri = new Triangle(sides);
-            return MathF.Round(tri.area,2);
+            return MathF.Round(tri.area,2); // Решил не встраивать округление в вычисление площади по умолчанию, чтобы пользователь сам мог округлить сколько ему нужно при помощи Round().
         }
 
         [Test]

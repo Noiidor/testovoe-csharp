@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace FigureLib
 {
+    // В этом решении я использовал паттерн "Стратегия", реализованный при помощи абстрактного класса
     public abstract class Figure
     {
         public virtual int numOfSides { get; }
 
-        // Буфферная переменная для предотвращения переполнения стека
+        // Буфферная переменная для предотвращения рекурсионных вызовов и последующего StackOverflowException
         private float[] _sides;
         public float[] sides
         {
             get { return _sides; }
             set { ValidateSides(value); }
         }
-
         
         /// <summary>
         /// 
@@ -72,6 +72,7 @@ namespace FigureLib
         protected abstract float Area();
     }
 
+    #region Figures
 
     // Для создания новой фигуры нужно лишь наследовать её от класса Figure
     // И переопределить numOfSides, Area и Perimeter
@@ -99,9 +100,11 @@ namespace FigureLib
         }
 
         /// <summary>
-        /// Determines whether the <see cref="Triangle"/> is rectangular.
+        /// Determines whether the <see cref="Triangle"/> is rectangular using Pythagorean theorem.
         /// </summary>
         /// <returns></returns>
+        
+        // Вычисление "прямоугольности" треугольника при помощи теоремы Пифагора.
         public bool isRight()
         {
             float hypotenuse = sides.Max();
@@ -160,6 +163,7 @@ namespace FigureLib
         }
     }
 
+    #endregion
 
     public class Calculations
     {
@@ -175,11 +179,19 @@ namespace FigureLib
         }
 
         /// <summary>
+        /// Calculates area of <see cref="Rectangle"/> with given sides.
+        /// </summary>
+        /// <param name="sides"></param>
+        /// <returns></returns>
+        public float AreaOfRectangle(float[] sides)
+        {
+            Rectangle rect = new Rectangle(sides);
+            return rect.area;
+        }
+
+        /// <summary>
         /// Calculates area of <see cref="Triangle"/> with given sides.
         /// </summary>
-        /// <param name="sideA"></param>
-        /// <param name="sideB"></param>
-        /// <param name="sideC"></param>
         /// <returns></returns>
         public float AreaOfTriangle(float[] sides)
         {
@@ -187,6 +199,11 @@ namespace FigureLib
             return tri.area;
         }
 
+
+        // А это попытка сделать вычисление площади фигуры без знания типа фигуры.
+        // Задача, честно говоря, весьма неоднозначная. Если для каждой фигуры формула площади разная, то как тогда определить тип фигуры?
+        // С помощью одних лишь длинн сторон это выглядит невозможным, например параллелипипед и ромб имеют практически одинаковую форму.
+        // Короче говоря, я сделал определение фигуры по количетсву сторон, но способ этот не идеальный, так как многие фигуры имеют разную форму, но одинаковое кол-во сторон.
         public float AreaOfFigure(float[] sides)
         {
             switch (sides.Length)
