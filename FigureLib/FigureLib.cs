@@ -8,12 +8,12 @@ namespace FigureLib
     {
         public virtual int numOfSides { get; }
 
-        // Буфферная переменная для предотвращения рекурсионных вызовов и последующего StackOverflowException
+        // Инкапсулирование _sides для защиты от неправильного доступа
         private float[] _sides;
         public float[] sides
         {
             get { return _sides; }
-            set { ValidateSides(value); }
+            set { _sides = ValidateSides(value); }
         }
         
         /// <summary>
@@ -26,7 +26,7 @@ namespace FigureLib
         }
 
         //Проверяет полученный массив на соответствие количеству сторон и правильности значений
-        private void ValidateSides(float[] sides)
+        private float[] ValidateSides(float[] sides)
         {
             sides = sides.Take(numOfSides).ToArray();
 
@@ -48,7 +48,7 @@ namespace FigureLib
             {
                 throw new ArgumentOutOfRangeException("Side lenght cannot be negative or zero");
             }
-            _sides = sides;
+            return sides;
         }
 
         /// <summary>
