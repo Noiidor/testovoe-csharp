@@ -67,7 +67,10 @@ namespace FigureLib
             get { return Perimeter(); }
         }
 
-        protected abstract float Perimeter();
+        protected virtual float Perimeter()
+        {
+            return sides.Sum();
+        }
 
         protected abstract float Area();
     }
@@ -75,7 +78,7 @@ namespace FigureLib
     #region Figures
 
     // Для создания новой фигуры нужно лишь наследовать её от класса Figure
-    // И переопределить numOfSides, Area и Perimeter
+    // Переопределить numOfSides, Area и если требуется - Perimeter
 
     public class Triangle : Figure
     {
@@ -84,11 +87,6 @@ namespace FigureLib
         /// <inheritdoc/>
         public Triangle(float[] sides) : base(sides)
         {}
-
-        protected override float Perimeter()
-        {
-            return sides.Sum();
-        }
 
         // Вычисляет площадь треугольника, используюя формулу Герона
         protected override float Area()
